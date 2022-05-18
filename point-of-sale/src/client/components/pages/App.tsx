@@ -7,7 +7,8 @@ import { PublicKey } from '@solana/web3.js';
 import { AppContext, AppProps as NextAppProps, default as NextApp } from 'next/app';
 import { AppInitialProps } from 'next/dist/shared/lib/utils';
 import { FC, useMemo } from 'react';
-import { DEVNET_ENDPOINT } from '../../utils/constants';
+import { DEVNET_ENDPOINT, MAINNET_ENDPOINT, MAINNET_USDC_MINT } from '../../utils/constants';
+import { USDCIcon } from '../images/USDCIcon';
 import { ConfigProvider } from '../contexts/ConfigProvider';
 import { FullscreenProvider } from '../contexts/FullscreenProvider';
 import { PaymentProvider } from '../contexts/PaymentProvider';
@@ -60,7 +61,7 @@ const App: FC<AppProps> & { getInitialProps(appContext: AppContext): Promise<App
         <ThemeProvider>
             <FullscreenProvider>
                 {recipient && label ? (
-                    <ConnectionProvider endpoint={DEVNET_ENDPOINT}>
+                    <ConnectionProvider endpoint={MAINNET_ENDPOINT}>
                         <WalletProvider wallets={wallets} autoConnect={connectWallet}>
                             <WalletModalProvider>
                                 <ConfigProvider
@@ -69,10 +70,11 @@ const App: FC<AppProps> & { getInitialProps(appContext: AppContext): Promise<App
                                     recipient={recipient}
                                     label={label}
                                     message={message}
-                                    symbol="SOL"
-                                    icon={<SOLIcon />}
-                                    decimals={9}
-                                    minDecimals={1}
+                                    splToken={MAINNET_USDC_MINT}
+                                    symbol="USDC"
+                                    icon={<USDCIcon />}
+                                    decimals={6}
+                                    minDecimals={2}
                                     connectWallet={connectWallet}
                                 >
                                     <TransactionsProvider>
@@ -87,6 +89,8 @@ const App: FC<AppProps> & { getInitialProps(appContext: AppContext): Promise<App
                 ) : (
                     <div className={css.logo}>
                         <SolanaPayLogo width={240} height={88} />
+                        <h1>Recipient</h1>
+                        <h2>label</h2>
                     </div>
                 )}
             </FullscreenProvider>
